@@ -8,16 +8,16 @@ namespace AspNetCoreService.Services
     {
         public CouchDb(string uri, string dbName)
         {
-            Uri = uri;
-            DbName = dbName;
+            _uri = uri;
+            _dbName = dbName;
         }
 
-        public string Uri { get;}
-        public string DbName { get; }
+        private readonly string _uri;
+        private readonly string _dbName;
 
         public string GetDocumentUri(string id)
         {
-            return Uri + "/" + DbName + "/" + id;
+            return $"{_uri}/{_dbName}/{id}";
         }
 
         public async Task<dynamic> GetDocument(string id)
