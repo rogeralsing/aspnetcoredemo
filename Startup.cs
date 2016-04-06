@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetCoreService.Controllers;
-using AspNetCoreService.Services;
+﻿using AspNetCoreService.Services;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +25,11 @@ namespace AspNetCoreService
         {
             // Add framework services.
             services.AddMvc();
-            var couchSettings = new CouchDb("http://192.168.99.100:32768/", "mydb");
+
+            var couchDb = Configuration["COUCH_DB"] ?? "mydb";
+            var couchPort = Configuration.Get("COUCH_PORT", 5984);
+            var couchAddress = Configuration.Get("COUCH_ADDRESS", "localhost");
+            var couchSettings = new CouchDb($"http://{couchAddress}:{couchPort}/", couchDb);
             services.Add(new ServiceDescriptor(typeof(CouchDb), couchSettings));
         }
 
